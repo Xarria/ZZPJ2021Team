@@ -68,6 +68,7 @@ public class KeyPromoterConfiguration extends BaseConfigurable implements Search
   private JCheckBox myShowKeyboardShortcutsOnly;
   private JCheckBox myDisabledInPresentationMode;
   private JCheckBox myDisabledInDistractionFreeMode;
+  private JCheckBox disableSoundNotificationsCheckBox;
   private JTextPane myPopupTemplate;
 
   private KeyPromoterSettings keyPromoterSettings = ServiceManager.getService(KeyPromoterSettings.class);
@@ -113,6 +114,7 @@ public class KeyPromoterConfiguration extends BaseConfigurable implements Search
     if (!myShowClickCount.getValue().equals(keyPromoterSettings.getShowTipsClickCount())) return true;
     if (myDisabledInPresentationMode.isSelected() != keyPromoterSettings.isDisabledInPresentationMode()) return true;
     if (myDisabledInDistractionFreeMode.isSelected() != keyPromoterSettings.isDisabledInDistractionFreeMode()) return true;
+    if (disableSoundNotificationsCheckBox.isSelected() != keyPromoterSettings.isPopupPlaySoundNotification()) return true;
 
     return false;
   }
@@ -129,6 +131,7 @@ public class KeyPromoterConfiguration extends BaseConfigurable implements Search
     keyPromoterSettings
             .setProposeToCreateShortcutCount(Integer.parseInt(myProposeToCreateShortcutCount.getValue().toString()));
     keyPromoterSettings.setShowTipsClickCount(Integer.parseInt(myShowClickCount.getValue().toString()));
+    keyPromoterSettings.setPopupPlaySoundNotification(disableSoundNotificationsCheckBox.isSelected());
   }
 
   public void reset() {
@@ -142,6 +145,7 @@ public class KeyPromoterConfiguration extends BaseConfigurable implements Search
     myDisabledInDistractionFreeMode.setSelected(keyPromoterSettings.isDisabledInDistractionFreeMode());
     myProposeToCreateShortcutCount.setValue(keyPromoterSettings.getProposeToCreateShortcutCount());
     myShowClickCount.setValue(keyPromoterSettings.getShowTipsClickCount());
+    disableSoundNotificationsCheckBox.setSelected(keyPromoterSettings.isPopupPlaySoundNotification());
   }
 
   public void disposeUIResources() {

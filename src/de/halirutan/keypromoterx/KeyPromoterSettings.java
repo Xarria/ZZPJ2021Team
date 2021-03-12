@@ -77,6 +77,11 @@ public class KeyPromoterSettings implements PersistentStateComponent<KeyPromoter
    */
   public boolean disabledInDistractionFreeMode = false;
 
+  /**
+   * Whether to play sound notification on popup
+   */
+  public boolean popupPlaySoundNotification = true;
+
   public String installedVersion = "1.0";
 
 
@@ -167,6 +172,14 @@ public class KeyPromoterSettings implements PersistentStateComponent<KeyPromoter
 
   public void setDisabledInDistractionFreeMode(boolean disabledInDistractionFreeMode) {
     this.disabledInDistractionFreeMode = disabledInDistractionFreeMode;
+  }
+
+  public boolean isPopupPlaySoundNotification() {
+    return popupPlaySoundNotification;
+  }
+
+  public void setPopupPlaySoundNotification(boolean popupPlaySoundNotification) {
+    this.popupPlaySoundNotification = popupPlaySoundNotification;
   }
 
   @Nullable
