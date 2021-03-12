@@ -8,12 +8,12 @@ import java.nio.file.Paths;
 
 public class KeyPromoterSound {
 
-    String soundFilepath = "src/de/halirutan/keypromoterx/mario_fall_sound_effect.wav";
+//    String soundFilepath = "src/de/halirutan/keypromoterx/mario_fall_sound_effect.wav";
 
-    public void play() throws IOException,
+    public void play(String filePath) throws IOException,
             UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
-        File file = new File(soundFilepath);
+        File file = new File(filePath);
 
         class AudioListener implements LineListener {
             private boolean done = false;

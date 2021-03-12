@@ -61,7 +61,7 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
    * Transfers the event to {@link KeyPromoterAction} and inspects the results. Then, depending on the result and the
    * Key Promoter X settings, a balloon is shown with the shortcut tip and the statistic is updated.
    *
-   * @param e event that is handled
+   * @param e event that is handledą
    */
   private void handleMouseEvent(AWTEvent e) {
     if (e.getSource() instanceof StripeButton && keyPromoterSettings.isToolWindowButtonsEnabled()) {
@@ -78,6 +78,9 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
   private long lastEventTime = -1;
   private boolean mouseDrag = false;
   private final KeyPromoterSound keyPromoterSound = new KeyPromoterSound();
+  private String soundLevel1 = "duck_quack_sound_effect.wav";
+  private String soundLevel2 = "wrong_answer_sound_effect.wav";
+  private String soundLevel3 = "mario_fall_sound_effect.wav";
 
 
   public KeyPromoter() {
@@ -174,11 +177,29 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
       if (type == ActionType.MouseAction) {
         statsService.registerAction(action);
         int count = statsService.get(action).count;
-        if (count % keyPromoterSettings.getShowTipsClickCount() == 0) {
+        if (count > keyPromoterSettings.getShowTipsClickCount() && count <= (keyPromoterSettings.getShowTipsClickCount() + 3)){
           KeyPromoterNotification.showTip(action, statsService.get(action).getCount());
           try {
             if (!keyPromoterSettings.disabledPlaySoundNotification) {
-              keyPromoterSound.play();
+              keyPromoterSound.play(soundLevel1);
+            }
+          } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
+            e.printStackTrace();
+          }
+        } else if (count > (keyPromoterSettings.getShowTipsClickCount() + 3) && count <= (keyPromoterSettings.getShowTipsClickCount() + 6)) {
+          KeyPromoterNotification.showTip(action, statsService.get(action).getCount());
+          try {
+            if (!keyPromoterSettings.disabledPlaySoundNotification) {
+              keyPromoterSound.play(soundLevel2);
+            }
+          } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
+            e.printStackTrace();
+          }
+        } else if (count > (keyPromoterSettings.getShowTipsClickCount() + 6)) {
+          KeyPromoterNotification.showTip(action, statsService.get(action).getCount());
+          try {
+            if (!keyPromoterSettings.disabledPlaySoundNotification) {
+              keyPromoterSound.play(soundLevel3);
             }
           } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
             e.printStackTrace();
@@ -187,7 +208,6 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
       } else if (type == ActionType.KeyboardAction) {
         statsService.registerShortcutUsed(action);
       }
-
     } else {
       final String ideaActionID = action.getIdeaActionID();
       withoutShortcutStats.putIfAbsent(ideaActionID, 0);
