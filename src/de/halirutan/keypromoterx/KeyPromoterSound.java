@@ -5,7 +5,7 @@ import java.io.*;
 
 public class KeyPromoterSound {
 
-    String soundFilepath = "D:/mario_fall_sound_effect";
+    String soundFilepath = "resources/de.halirutan.keypromoterx/sound_effects/mario_fall_sound_effect.wav";
 
     public void play() throws IOException,
             UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
