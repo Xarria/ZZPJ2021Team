@@ -80,7 +80,7 @@ public class KeyPromoterSettings implements PersistentStateComponent<KeyPromoter
   /**
    * Whether to play sound notification on popup
    */
-  public boolean popupPlaySoundNotification = true;
+  public boolean disabledPlaySoundNotification = false;
 
   public String installedVersion = "1.0";
 
@@ -175,11 +175,11 @@ public class KeyPromoterSettings implements PersistentStateComponent<KeyPromoter
   }
 
   public boolean isPopupPlaySoundNotification() {
-    return popupPlaySoundNotification;
+    return disabledPlaySoundNotification;
   }
 
   public void setPopupPlaySoundNotification(boolean popupPlaySoundNotification) {
-    this.popupPlaySoundNotification = popupPlaySoundNotification;
+    this.disabledPlaySoundNotification = popupPlaySoundNotification;
   }
 
   @Nullable

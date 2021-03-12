@@ -1,11 +1,14 @@
 package de.halirutan.keypromoterx;
 
+import com.google.common.io.Resources;
+
 import javax.sound.sampled.*;
 import java.io.*;
+import java.nio.file.Paths;
 
 public class KeyPromoterSound {
 
-    String soundFilepath = "resources/de.halirutan.keypromoterx/sound_effects/mario_fall_sound_effect.wav";
+    String soundFilepath = "src/de/halirutan/keypromoterx/mario_fall_sound_effect.wav";
 
     public void play() throws IOException,
             UnsupportedAudioFileException, LineUnavailableException, InterruptedException {

@@ -36,11 +36,14 @@ import com.intellij.openapi.wm.impl.StripeButton;
 import de.halirutan.keypromoterx.statistic.KeyPromoterStatistics;
 import org.jetbrains.annotations.NotNull;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +77,7 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
   private static final String distractionFreeModeKey = "editor.distraction.free.mode";
   private long lastEventTime = -1;
   private boolean mouseDrag = false;
+  private final KeyPromoterSound keyPromoterSound = new KeyPromoterSound();
 
 
   public KeyPromoter() {
@@ -172,6 +176,13 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
         int count = statsService.get(action).count;
         if (count % keyPromoterSettings.getShowTipsClickCount() == 0) {
           KeyPromoterNotification.showTip(action, statsService.get(action).getCount());
+          try {
+            if (!keyPromoterSettings.disabledPlaySoundNotification) {
+              keyPromoterSound.play();
+            }
+          } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
+            e.printStackTrace();
+          }
         }
       } else if (type == ActionType.KeyboardAction) {
         statsService.registerShortcutUsed(action);
@@ -185,7 +196,6 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
           &&
           withoutShortcutStats.get(ideaActionID) % keyPromoterSettings.getProposeToCreateShortcutCount() == 0) {
         KeyPromoterNotification.askToCreateShortcut(action);
-
       }
     }
   }
