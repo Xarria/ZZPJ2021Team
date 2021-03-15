@@ -10,7 +10,6 @@ public class KeyPromoterSound {
     public void play(InputStream input) throws IOException,
             UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
-        //File file = new File(filePath);
 
         class AudioListener implements LineListener {
             private boolean done = false;

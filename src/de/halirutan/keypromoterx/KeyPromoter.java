@@ -79,9 +79,6 @@ public class KeyPromoter implements AWTEventListener, AnActionListener, Disposab
   private long lastEventTime = -1;
   private boolean mouseDrag = false;
   private final KeyPromoterSound keyPromoterSound = new KeyPromoterSound();
-//  private String soundLevel1 = "/de/halirutan/keypromoterx/sound_effects/duck_quack_sound_effect.wav";
-//  private String soundLevel2 = "/de/halirutan/keypromoterx/sound_effects/wrong_answer_sound_effect.wav";
-//  private String soundLevel3 = "/de/halirutan/keypromoterx/sound_effects/mario_fall_sound_effect.wav";
   private InputStream soundLevel1 = getClass().getResourceAsStream("/de/halirutan/keypromoterx/sound_effects/duck_quack_sound_effect.wav");
   private InputStream soundLevel2 = getClass().getResourceAsStream("/de/halirutan/keypromoterx/sound_effects/wrong_answer_sound_effect.wav");
   private InputStream soundLevel3 = getClass().getResourceAsStream("/de/halirutan/keypromoterx/sound_effects/mario_fall_sound_effect.wav");
