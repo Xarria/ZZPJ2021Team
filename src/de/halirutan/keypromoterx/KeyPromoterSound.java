@@ -1,17 +1,16 @@
 package de.halirutan.keypromoterx;
 
-import com.google.common.io.Resources;
-
 import javax.sound.sampled.*;
-import java.io.*;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class KeyPromoterSound {
 
-    public void play(String filePath) throws IOException,
+    public void play(InputStream input) throws IOException,
             UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
-        File file = new File(filePath);
+        //File file = new File(filePath);
 
         class AudioListener implements LineListener {
             private boolean done = false;
@@ -32,7 +31,7 @@ public class KeyPromoterSound {
             }
         }
         AudioListener listener = new AudioListener();
-        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file)) {
+        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(input)) {
             Clip clip = AudioSystem.getClip();
             try (clip) {
                 clip.addLineListener(listener);
