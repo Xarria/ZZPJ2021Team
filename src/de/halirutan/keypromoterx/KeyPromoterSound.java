@@ -8,8 +8,6 @@ import java.nio.file.Paths;
 
 public class KeyPromoterSound {
 
-//    String soundFilepath = "src/de/halirutan/keypromoterx/mario_fall_sound_effect.wav";
-
     public void play(String filePath) throws IOException,
             UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
