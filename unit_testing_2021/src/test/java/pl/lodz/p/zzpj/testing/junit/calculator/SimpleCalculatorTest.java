@@ -129,15 +129,23 @@ public class SimpleCalculatorTest {
     }
 
     @Test
-    public void modulo() {
-        int a = rand.nextInt();
-        int b = rand.nextInt();
-        assertEquals(a % b, sut.modulo(a, b));
+    @Parameters(method = "moduloSetTest")
+    public void modulo(int a, int b, int c) {
+        assertEquals(c, sut.modulo(a, b));
+    }
+
+    private Object[] moduloSetTest() {
+        return new Object[] {
+                new Object[] { 154, 15, 4 },
+                new Object[] { 132, 12, 0 },
+                new Object[] { 12, 7, 5 }
+        };
     }
 
     @Test
-    public void isPrime() {
-        assertTrue(sut.isPrime(97));
-        assertFalse(sut.isPrime(20));
+    @Parameters({ "97, 20" })
+    public void isPrime(int a, int b) {
+        assertTrue(sut.isPrime(a));
+        assertFalse(sut.isPrime(b));
     }
 }
