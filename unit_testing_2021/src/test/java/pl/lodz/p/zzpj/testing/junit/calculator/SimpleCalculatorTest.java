@@ -20,7 +20,7 @@ import static org.junit.Assert.assertFalse;
 @RunWith(JUnitParamsRunner.class)
 public class SimpleCalculatorTest {
 
-    public static final double DELTA = 0.000001;
+    private static final double DELTA = 0.000001;
     private SimpleCalculator sut;
     private Random rand;
 
