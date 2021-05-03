@@ -2,21 +2,17 @@ package pl.ttpsc.restaurant.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.ttpsc.restaurant.errors.MealNotFoundException;
 import pl.ttpsc.restaurant.errors.OrderNotFoundException;
 import pl.ttpsc.restaurant.model.Order;
 import pl.ttpsc.restaurant.model.OrderResponse;
 import pl.ttpsc.restaurant.persistance.MealsRepository;
 import pl.ttpsc.restaurant.persistance.OrdersRepository;
-import pl.ttpsc.restaurant.persistance.entities.MealEntity;
 import pl.ttpsc.restaurant.persistance.entities.OrderEntity;
 import pl.ttpsc.restaurant.services.converters.OrdersConverter;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
-
-import static pl.ttpsc.restaurant.services.MealsService.MEAL_NOT_FOUND_MSG;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersService {
@@ -34,8 +30,7 @@ public class OrdersService {
 
     @Transactional
     public OrderEntity addOrder(final Order order) {
-        //TODO to be implemented
-        return null;
+        return ordersRepository.save(OrdersConverter.toEntity(order));
     }
 
     public OrderResponse getOrder(final long id) {
@@ -44,5 +39,16 @@ public class OrdersService {
 
         final OrderResponse response = OrdersConverter.toResponse(order);
         return response;
+    }
+
+    public OrderEntity updateOrder(long id, Order order) {
+        OrderEntity orderEntity = ordersRepository.findById(id).get();
+        orderEntity.setEmail(order.getEmail());
+        orderEntity.setMeals(order.getMeals().stream().map(mealID -> mealsRepository.findById(mealID).get()).collect(Collectors.toSet()));
+        return ordersRepository.save(orderEntity);
+    }
+
+    public List<OrderResponse> getAllOrders() {
+        return ordersRepository.findAll().stream().map(OrdersConverter::toResponse).collect(Collectors.toList());
     }
 }

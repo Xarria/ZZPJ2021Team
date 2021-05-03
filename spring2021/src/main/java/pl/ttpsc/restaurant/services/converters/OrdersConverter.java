@@ -1,6 +1,7 @@
 package pl.ttpsc.restaurant.services.converters;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import pl.ttpsc.restaurant.model.Meal;
 import pl.ttpsc.restaurant.model.Order;
 import pl.ttpsc.restaurant.model.OrderResponse;
@@ -18,8 +19,9 @@ public class OrdersConverter {
         return orderEntity;
     }
 
-    public static OrderResponse toResponse(OrderEntity order) {
-        //TODO to be implemented
-        return null;
+    public static OrderResponse toResponse(OrderEntity orderEntity) {
+        OrderResponse orderResponse = new OrderResponse();
+        BeanUtils.copyProperties(orderEntity, orderResponse);
+        return orderResponse;
     }
 }
