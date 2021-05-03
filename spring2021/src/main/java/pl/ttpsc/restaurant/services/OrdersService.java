@@ -7,11 +7,13 @@ import pl.ttpsc.restaurant.model.Order;
 import pl.ttpsc.restaurant.model.OrderResponse;
 import pl.ttpsc.restaurant.persistance.MealsRepository;
 import pl.ttpsc.restaurant.persistance.OrdersRepository;
+import pl.ttpsc.restaurant.persistance.entities.MealEntity;
 import pl.ttpsc.restaurant.persistance.entities.OrderEntity;
 import pl.ttpsc.restaurant.services.converters.OrdersConverter;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +21,8 @@ public class OrdersService {
 
     private static final String ORDER_NOT_FOUND_MSG = "Order with id '%s' not found.";
 
-    private OrdersRepository ordersRepository;
-    private MealsRepository mealsRepository;
+    private final OrdersRepository ordersRepository;
+    private final MealsRepository mealsRepository;
 
     @Autowired
     public OrdersService(OrdersRepository ordersRepository, MealsRepository mealsRepository) {
@@ -30,6 +32,10 @@ public class OrdersService {
 
     @Transactional
     public OrderEntity addOrder(final Order order) {
+        Set<MealEntity> meals = order.getMeals().stream().map(mealID -> mealsRepository.findById(mealID).get()).collect(Collectors.toSet());
+        for (MealEntity meal : meals) {
+            meal.getOrders().add(OrdersConverter.toEntity(order));
+        }
         return ordersRepository.save(OrdersConverter.toEntity(order));
     }
 
