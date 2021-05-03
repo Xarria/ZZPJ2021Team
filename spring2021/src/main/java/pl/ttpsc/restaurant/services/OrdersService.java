@@ -3,8 +3,10 @@ package pl.ttpsc.restaurant.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.ttpsc.restaurant.errors.OrderNotFoundException;
+import pl.ttpsc.restaurant.errors.OrderStatusDoneException;
 import pl.ttpsc.restaurant.model.Order;
 import pl.ttpsc.restaurant.model.OrderResponse;
+import pl.ttpsc.restaurant.model.Status;
 import pl.ttpsc.restaurant.persistance.MealsRepository;
 import pl.ttpsc.restaurant.persistance.OrdersRepository;
 import pl.ttpsc.restaurant.persistance.entities.MealEntity;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class OrdersService {
 
     private static final String ORDER_NOT_FOUND_MSG = "Order with id '%s' not found.";
+    private static final String ORDER_STATUS_DONE_MSG = "Order with id '%s' has status DONE.";
 
     private final OrdersRepository ordersRepository;
     private final MealsRepository mealsRepository;
@@ -48,6 +51,9 @@ public class OrdersService {
     }
 
     public OrderEntity updateOrder(long id, Order order) {
+        if (ordersRepository.findById(id).get().getStatus() == Status.DONE) {
+            throw new OrderStatusDoneException(String.format(ORDER_STATUS_DONE_MSG, id));
+        }
         OrderEntity orderEntity = ordersRepository.findById(id).get();
         orderEntity.setEmail(order.getEmail());
         orderEntity.setMeals(order.getMeals().stream().map(mealID -> mealsRepository.findById(mealID).get()).collect(Collectors.toSet()));

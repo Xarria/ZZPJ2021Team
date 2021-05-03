@@ -3,6 +3,7 @@ package pl.ttpsc.restaurant.persistance.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.ttpsc.restaurant.model.Status;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String email;
-    private String status;
+    private Status status = Status.IN_PROGRESS;
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "orders_meals",
