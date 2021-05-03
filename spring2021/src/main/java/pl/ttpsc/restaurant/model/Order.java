@@ -14,4 +14,5 @@ public class Order {
     private String email;
     private Set<Long> meals;
     private long cost;
+    private String status;
 }

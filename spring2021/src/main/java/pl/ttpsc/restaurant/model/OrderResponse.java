@@ -14,4 +14,5 @@ public class OrderResponse {
     private String email;
     private Set<Meal> meals;
     private long cost;
+    private String status;
 }

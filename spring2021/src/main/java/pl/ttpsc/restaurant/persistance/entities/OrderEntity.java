@@ -19,6 +19,7 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String email;
+    private String status;
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "orders_meals",
