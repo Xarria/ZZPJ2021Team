@@ -5,11 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.ttpsc.restaurant.errors.MealNotFoundException;
+import pl.ttpsc.restaurant.model.Meal;
 import pl.ttpsc.restaurant.persistance.MealsRepository;
 import pl.ttpsc.restaurant.persistance.entities.MealEntity;
 import pl.ttpsc.restaurant.persistance.entities.OrderEntity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -51,76 +53,59 @@ class MealsServiceTest {
 
     @Test
     public void testGetMeal() {
-        MealEntity testMealEntity;
-        testMealEntity = new MealEntity();
-        testMealEntity.setCost(2115);
-        testMealEntity.setName("TestName");
-        testMealEntity.setId(2115);
-        testMealEntity.setDescription("Description");
-        MealEntity mealEntity = mealsService.getMeal(2115);
-        testMealEntity.setOrders(set);
-        mealsService.addMeal(testMealEntity);
+        Meal testMeal = new Meal();
+        testMeal.setCost(2115);
+        testMeal.setName("TestName");
+        testMeal.setDescription("Description");
+        MealEntity me = mealsService.addMeal(testMeal);
+        Meal meal = mealsService.getMeal(me.getId());
 
-        assertThat(mealEntity.getId()).isEqualTo(2115);
-        assertThat(mealEntity.getDescription()).isEqualTo("Description");
-        assertThat(mealEntity.getName()).isEqualTo("TestName");
-        assertThat(mealEntity.getOrders()).isEqualTo(set);
-        assertThat(mealEntity.getCost()).isEqualTo(0);
+        assertThat(meal.getDescription()).isEqualTo("Description");
+        assertThat(meal.getName()).isEqualTo("TestName");
+        assertThat(meal.getCost()).isEqualTo(0);
     }
 
     @Test
     public void testUpdateMeal() {
-        MealEntity testMealEntity;
-        testMealEntity = new MealEntity();
-        testMealEntity.setCost(2115);
-        testMealEntity.setName("TestName");
-        testMealEntity.setId(2138);
-        testMealEntity.setDescription("Description");
-        MealEntity mealEntity = mealsService.getMeal(2138);
+        Meal testMeal = new Meal();
+        testMeal.setCost(2115);
+        testMeal.setName("TestName");
+        testMeal.setDescription("Description");
+        MealEntity me = mealsService.addMeal(testMeal);
+        Meal meal = mealsService.getMeal(me.getId());
 
-        testMealEntity.setName("Now it's spaghetti");
-        mealsService.updateMeal(2138, testMealEntity);
+        meal.setName("Now it's spaghetti");
+        mealsService.updateMeal(me.getId(), meal);
 
-        assertThat(mealsService.getMeal(2138).getName()).isEqualTo("Now it's spaghetti");
+        assertThat(mealsService.getMeal(me.getId()).getName()).isEqualTo("Now it's spaghetti");
     }
 
     @Test
     public void testAddMeal() {
-        MealEntity testMealEntity;
-        testMealEntity = new MealEntity();
-        testMealEntity.setCost(4848);
-        testMealEntity.setName("TestName");
-        testMealEntity.setId(2115);
-        testMealEntity.setDescription("Description");
-        MealEntity mealEntity = mealsService.getMeal(2115);
-        testMealEntity.setOrders(set);
+        Meal testMeal = new Meal();
+
+        int size = mealsService.getAllMeals().size();
 
 
-        Throwable result = Assertions.catchThrowable(() -> mealsService.getMeal(4848));
-        assertThat(result).isInstanceOf(MealNotFoundException.class);
-        assertThat(result.getMessage()).isEqualTo("Meal with id '4848' not found.");
+        mealsService.addMeal(testMeal);
+        mealsService.addMeal(testMeal);
+        mealsService.addMeal(testMeal);
+        mealsService.addMeal(testMeal);
 
-        mealsService.addMeal(testMealEntity);
-
-        MealEntity me = mealsService.getMeal(4848);
-
-        assertThat(me.getId()).isEqualTo(4848);
-        assertThat(me.getDescription()).isEqualTo("Description");
-        assertThat(me.getName()).isEqualTo("TestName");
+        assertThat(size + 4).isEqualTo(mealsService.getAllMeals().size());
     }
 
     @Test
     public void testGetAllMeals() {
-        int size = mealsService.getAllMeals().size();
-        MealEntity m1 = new MealEntity();
-        MealEntity m2 = new MealEntity();
-        MealEntity m3 = new MealEntity();
-        MealEntity m4 = new MealEntity();
-        mealsService.addMeal(m1);
-        mealsService.addMeal(m2);
-        mealsService.addMeal(m3);
-        mealsService.addMeal(m4);
+        Meal testMeal = new Meal();
 
-        assertThat(mealsService.getAllMeals().size()).isEqualTo(size + 4);
+        int size = mealsService.getAllMeals().size();
+
+        mealsService.addMeal(testMeal);
+        mealsService.addMeal(testMeal);
+        mealsService.addMeal(testMeal);
+        mealsService.addMeal(testMeal);
+
+        assertThat(size + 4).isEqualTo(mealsService.getAllMeals().size());
     }
 }
