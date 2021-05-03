@@ -10,4 +10,10 @@ public class MealsConverter {
         BeanUtils.copyProperties(mealEntity, meal);
         return meal;
     }
+
+    public static MealEntity toEntity(Meal meal){
+        final MealEntity mealEntity = new MealEntity();
+        BeanUtils.copyProperties(meal, mealEntity);
+        return mealEntity;
+    }
 }
